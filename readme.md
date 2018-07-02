@@ -28,3 +28,16 @@
 |\<dubbo:method/>|用于 ServiceConfig 和 ReferenceConfig 指定方法级的配置信息| 方法配置|
 |\<dubbo:argument/>|用于指定方法参数配置|参数配置|
 
+## 三、其他标签属性
+
+###   1、启动检查
+
+> Dubbo默认在启动时检查依赖的服务是否可用，若需要关闭该检查可使用`check`属性
+
+-   关闭某个服务的启动时检查`<dubbo:reference interface="hht.dragon.TestService" check="false" />`
+
+-   关闭所有服务的启动时检查`<dubbo:consumer check="false" />`
+
+-   关闭注册中心启动时检查`<dubbo:registry check="false" />`
+
+###     2、集群容错

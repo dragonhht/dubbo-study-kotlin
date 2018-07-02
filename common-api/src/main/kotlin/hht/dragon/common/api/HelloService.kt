@@ -10,4 +10,6 @@ interface HelloService {
 
     fun Hello()
 
+    fun sayWord(name: String): String
+
 }

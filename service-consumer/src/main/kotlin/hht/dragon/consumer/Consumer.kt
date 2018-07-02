@@ -16,6 +16,8 @@ fun main(args: Array<String>) {
     val service : HelloService = context.getBean("helloService") as HelloService
 
     service.Hello()
+    val str = service.sayWord("测试语句")
+    println("输出：$str")
 
     System.`in`.read()
 }

@@ -9,6 +9,10 @@ import hht.dragon.common.api.HelloService
  * @Date: 18-7-1
  */
 class ProviderServiceImp : HelloService {
+    override fun sayWord(name: String): String {
+        return name
+    }
+
     override fun Hello() {
         println("Hello World")
     }
