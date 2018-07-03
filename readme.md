@@ -1,4 +1,4 @@
-# Dubbo学习
+# Dubbo学习(均使用XML配置)
 
 ## 一、架构
 
@@ -70,3 +70,8 @@
         -   `limited` : 可伸缩线程池，但池中的线程数只会增长不会收缩。只增长不收缩的目的是为了避免收缩时突然来了大流量引起的性能问题
         
         -   `eager` : 优先创建`Worker`线程池。在任务数量大于`corePoolSize`但是小于`maximumPoolSize`时，优先创建`Worker`来处理任务。当任务数量大于`maximumPoolSize`时，将任务放入阻塞队列中。阻塞队列充满时抛出`RejectedExecutionException`。(相比于`cached:cached`在任务数量超过`maximumPoolSize`时直接抛出异常而不是将任务放入阻塞队列)   
+
+###     4、直连提供者(建议生产环境不要使用，可在测试阶段中使用)
+
+-   在需要将消费者与提供者直接连接，即绕过注册中心的情况时，可在`\<dubbo:reference>`中配置提供者的url，如`\<dubbo:reference id="xxxService" interface="com.alibaba.xxx.XxxService" url="dubbo://localhost:20890" />
+`
