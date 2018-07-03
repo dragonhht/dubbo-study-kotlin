@@ -41,3 +41,32 @@
 -   关闭注册中心启动时检查`<dubbo:registry check="false" />`
 
 ###     2、集群容错
+
+
+###     3、线程模型
+
+-   在dubbo中可配置线程池，如`<dubbo:protocol name="dubbo" dispatcher="all" threadpool="fixed" threads="100" />`
+
+-   各参数说明
+
+    -   Dispatcher
+    
+        -  `all` : 所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等
+        
+        -   `direct` : 所有消息都不派发到线程池，全部在 IO 线程上直接执行
+        
+        -   `message` : 只有请求响应消息派发到线程池，其它连接断开事件，心跳等消息，直接在 IO 线程上执行
+        
+        -   `execution` : 只请求消息派发到线程池，不含响应，响应和其它连接断开事件，心跳等消息，直接在 IO 线程上执行
+        
+        -   `connection` : 在 IO 线程上，将连接断开事件放入队列，有序逐个执行，其它消息派发到线程池
+        
+    -   ThreadPool
+    
+        -   `fixed` : 固定大小线程池，启动时建立线程，不关闭，一直持有,默认值
+        
+        -   `cached` : 缓存线程池，空闲一分钟自动删除，需要时重建
+        
+        -   `limited` : 可伸缩线程池，但池中的线程数只会增长不会收缩。只增长不收缩的目的是为了避免收缩时突然来了大流量引起的性能问题
+        
+        -   `eager` : 优先创建`Worker`线程池。在任务数量大于`corePoolSize`但是小于`maximumPoolSize`时，优先创建`Worker`来处理任务。当任务数量大于`maximumPoolSize`时，将任务放入阻塞队列中。阻塞队列充满时抛出`RejectedExecutionException`。(相比于`cached:cached`在任务数量超过`maximumPoolSize`时直接抛出异常而不是将任务放入阻塞队列)   
