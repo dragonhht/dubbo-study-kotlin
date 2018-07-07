@@ -75,3 +75,25 @@
 
 -   在需要将消费者与提供者直接连接，即绕过注册中心的情况时，可在`\<dubbo:reference>`中配置提供者的url，如`\<dubbo:reference id="xxxService" interface="com.alibaba.xxx.XxxService" url="dubbo://localhost:20890" />
 `
+
+## 四、使用ZooKeeper
+
+-   添加依赖
+
+```
+<dependency>
+    <groupId>org.apache.zookeeper</groupId>
+    <artifactId>zookeeper</artifactId>
+    <version>3.4.11</version>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-recipes</artifactId>
+    <version>4.0.1</version>
+</dependency>
+```
+
+-   服务提供端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
+
+-   服务消费端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
