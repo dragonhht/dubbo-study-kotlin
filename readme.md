@@ -97,3 +97,121 @@
 -   服务提供端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
 
 -   服务消费端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
+
+
+## 五、与Spring Boot整合
+
+-   服务提供端
+
+    -   在Service实现类中使用`Dubbo`的`@Service`注解
+
+    ```kotlin
+    @Service
+    class SayHelloServiceImp : HelloService {
+        override fun Hello() {
+            println("你好!!!")
+        }
+
+        override fun sayWord(name: String): String {
+            return "$name: 你好"
+        }
+
+    }
+    ```
+
+    -   全局Dubbo配置
+
+    ```kotlin
+    @Configuration
+    open class DubboConfig {
+
+        @Bean
+        open fun applicationConfig() : ApplicationConfig {
+            val applicationConfig = ApplicationConfig()
+            applicationConfig.name = "spring-boot-provider"
+            return applicationConfig
+        }
+
+        @Bean
+        open fun registryConfig() : RegistryConfig {
+            val registryConfig = RegistryConfig()
+            registryConfig.address = "zookeeper://127.0.0.1:2181"
+            return registryConfig
+        }
+
+    }
+    ```
+
+    -   在Spring Boot启动类中添加注解`@DubboComponentScan`，自定需暴露的服务的实现
+
+    ```
+    @SpringBootApplication
+    @DubboComponentScan(basePackages = ["hht.dragon.spring.boot.provider.service.impl"])
+    open class SpringBootProviderApplication
+
+    fun main(args: Array<String>) {
+        runApplication<SpringBootProviderApplication>(*args)
+    }
+    ```
+
+-   服务消费端
+
+    -   在需要使用服务端服务的类中使用注解`@Reference`,引用服务端服务
+
+    ```kotlin
+    @Service
+    class ConsumerService {
+
+        @Reference
+        lateinit var helloService: HelloService
+
+        fun sayHello() {
+            helloService.Hello()
+            val say = helloService.sayWord("消费端调用")
+            println(say)
+        }
+
+    }
+    ```
+
+    -   全局Dubbo配置
+
+    ```kotlin
+    @Configuration
+    open class MyConsumerConfig {
+
+        @Bean
+        open fun applicationCofig() : ApplicationConfig {
+            val applicationConfig = ApplicationConfig()
+            applicationConfig.name = "consumer-name"
+            return applicationConfig
+        }
+
+        @Bean
+        open fun consumerConfig() : ConsumerConfig {
+            val consumerConfig = ConsumerConfig()
+            consumerConfig.timeout = 3000
+            return consumerConfig
+        }
+
+        @Bean
+        open fun registryConfig() : RegistryConfig {
+            val registryConfig = RegistryConfig()
+            registryConfig.address = "zookeeper://127.0.0.1:2181"
+            return registryConfig
+        }
+
+    }
+    ```
+
+    -   在Spring Boot启动类中使用`@DubboComponentScan`,指定service包
+
+    ```kotlin
+    @SpringBootApplication
+    @DubboComponentScan(basePackages = ["hht.dragon.consumer.service"])
+    open class SpringBootConsumerApplication
+
+    fun main(args: Array<String>) {
+        runApplication<SpringBootConsumerApplication>(*args)
+    }
+    ```
