@@ -8,9 +8,11 @@
     <!--<dubbo:registry address="multicast://224.5.6.7:1234" />-->
     <dubbo:registry address="zookeeper://127.0.0.1:2181" />
     <dubbo:protocol name="dubbo" port="20880" />
-    <dubbo:service interface="hht.dragon.common.api.HelloService" ref="helloService" />
+    <dubbo:service interface="hht.dragon.common.api.HelloService" ref="helloService" version="1.0" />
+    <dubbo:service interface="hht.dragon.common.api.HelloService" ref="helloService2" version="2.0" />
 
 
     <bean id="helloService" class="hht.dragon.provider.ProviderServiceImp" />
+    <bean id="helloService2" class="hht.dragon.provider.ProviderServiceImp2" />
 
 </beans>

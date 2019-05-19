@@ -76,6 +76,25 @@
 -   在需要将消费者与提供者直接连接，即绕过注册中心的情况时，可在`\<dubbo:reference>`中配置提供者的url，如`\<dubbo:reference id="xxxService" interface="com.alibaba.xxx.XxxService" url="dubbo://localhost:20890" />
 `
 
+###     5、版本
+
+-   在服务提供者中可针对接口提供不同版本的实现
+
+-   设置时需对同一服务的接口进行不同的实现如类[ProviderServiceImp](./service-provider/src/main/kotlin/hht/dragon/provider/ProviderServiceImp.kt)和类[ProviderServiceImp2](./service-provider/src/main/kotlin/hht/dragon/provider/ProviderServiceImp2.kt)
+
+-   在服务发布的配置中使用`version`属性：
+
+    ```
+    <dubbo:service interface="hht.dragon.common.api.HelloService" ref="helloService" version="1.0" />
+    <dubbo:service interface="hht.dragon.common.api.HelloService" ref="helloService2" version="2.0" />
+    ```
+    
+-   在服务消费者可通过`version`属性指定版本
+
+    ```
+    <dubbo:reference interface="hht.dragon.common.api.HelloService" id="helloService" version="1.0" />
+    ```
+
 ## 四、使用ZooKeeper
 
 -   添加依赖
@@ -97,7 +116,6 @@
 -   服务提供端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
 
 -   服务消费端配置： `\<dubbo:registry address="zookeeper://127.0.0.1:2181" />`
-
 
 ## 五、与Spring Boot整合
 
